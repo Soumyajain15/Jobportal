@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,16 +11,24 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { UserPlus, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SignupForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const auth = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (auth.isAuthenticated === true) {
+      router.push('/profile');
+    }
+  }, [auth.isAuthenticated, router]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,24 +56,24 @@ export default function SignupForm() {
     
     setIsLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      // Simulate a successful signup
       console.log('Signup form submitted with:', { name, email, password });
+      auth.login(); 
       toast({
         title: 'Account Created',
-        description: "Your account has been successfully created. Please login.",
+        description: "Your account has been successfully created. Redirecting...",
       });
-      // Clear form or redirect
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      // Optionally redirect to login after a short delay or on user action
-      // router.push('/login'); 
+      router.push('/profile'); 
     }, 2000);
   };
+
+  if (auth.isAuthenticated === null) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  }
+  if (auth.isAuthenticated === true) {
+      return null; 
+  }
 
   return (
     <Card className="w-full max-w-md shadow-xl">
@@ -114,6 +122,7 @@ export default function SignupForm() {
             <Input 
               id="password" 
               type="password" 
+              placeholder="minimum 6 characters"
               required 
               value={password}
               onChange={(e) => setPassword(e.target.value)}

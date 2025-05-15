@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,14 +11,23 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { LogIn, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const auth = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (auth.isAuthenticated === true) {
+      router.push('/profile');
+    }
+  }, [auth.isAuthenticated, router]);
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,18 +45,33 @@ export default function LoginForm() {
       return;
     }
 
-    // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      // Simulate a successful login
-      console.log('Login form submitted with:', { email, password });
-      toast({
-        title: 'Login Successful',
-        description: 'Welcome back! Redirecting you now...',
-      });
-      router.push('/'); // Redirect to homepage or dashboard
-    }, 2000);
+      // Simulate a successful login - you can use "user@example.com" and "password"
+      if (email === "user@example.com" && password === "password") {
+        auth.login(); 
+        toast({
+          title: 'Login Successful',
+          description: 'Welcome back! Redirecting you now...',
+        });
+        router.push('/profile'); 
+      } else {
+        setError('Invalid email or password.');
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: "Invalid email or password.",
+        });
+      }
+    }, 1500);
   };
+  
+  if (auth.isAuthenticated === null) {
+    return <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  }
+  if (auth.isAuthenticated === true) {
+     return null; 
+  }
 
   return (
     <Card className="w-full max-w-md shadow-xl">
@@ -72,7 +96,7 @@ export default function LoginForm() {
             <Input 
               id="email" 
               type="email" 
-              placeholder="m@example.com" 
+              placeholder="user@example.com" 
               required 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -84,6 +108,7 @@ export default function LoginForm() {
             <Input 
               id="password" 
               type="password" 
+              placeholder="password"
               required 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
