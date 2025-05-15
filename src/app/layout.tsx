@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
@@ -5,6 +6,7 @@ import './globals.css';
 import Header from '@/components/layout/header';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/hooks/useAuth'; // Import AuthProvider
+import CareerAssistantWidget from '@/components/chatbot/career-assistant-widget'; // Import Chatbot
 
 export const metadata: Metadata = {
   title: 'CareerConnect Pro',
@@ -25,6 +27,7 @@ export default function RootLayout({
             {children}
           </main>
           <Toaster />
+          <CareerAssistantWidget /> {/* Add Chatbot Widget Here */}
         </AuthProvider>
       </body>
     </html>
