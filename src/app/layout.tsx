@@ -5,8 +5,9 @@ import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import Header from '@/components/layout/header';
 import { Toaster } from "@/components/ui/toaster";
-import { AuthProvider } from '@/hooks/useAuth'; // Import AuthProvider
-import CareerAssistantWidget from '@/components/chatbot/career-assistant-widget'; // Import Chatbot
+import { AuthProvider } from '@/hooks/useAuth';
+import CareerAssistantWidget from '@/components/chatbot/career-assistant-widget';
+import { ThemeProvider } from '@/components/theme-provider'; // Import ThemeProvider
 
 export const metadata: Metadata = {
   title: 'CareerConnect Pro',
@@ -19,16 +20,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning> {/* suppressHydrationWarning for next-themes */}
       <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased font-sans`}>
-        <AuthProvider> {/* Wrap with AuthProvider */}
-          <Header />
-          <main className="pt-16"> {/* Add padding to avoid content overlap with fixed header */}
-            {children}
-          </main>
-          <Toaster />
-          <CareerAssistantWidget /> {/* Add Chatbot Widget Here */}
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <Header />
+            <main className="pt-16"> {/* Add padding to avoid content overlap with fixed header */}
+              {children}
+            </main>
+            <Toaster />
+            <CareerAssistantWidget />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
