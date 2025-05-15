@@ -20,7 +20,7 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
   return (
     <Card className="shadow-xl h-full sticky top-24">
       <CardContent className="pt-6 h-full overflow-y-auto max-h-[calc(100vh-8rem)]">
-        <div className="aspect-[8.5/11] w-full bg-white rounded-md p-6 md:p-8 border shadow-inner text-sm text-gray-800">
+        <div className="actual-resume-content-for-print aspect-[8.5/11] w-full bg-white rounded-md p-6 md:p-8 border shadow-inner text-sm text-gray-800">
           {/* Header: Name & Contact */}
           <header className="text-center mb-6 border-b pb-4">
             <h1 className="text-3xl font-bold text-primary">

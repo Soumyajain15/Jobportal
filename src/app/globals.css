@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -89,5 +90,86 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media print {
+  /* Hide general UI elements */
+  body > header, /* Main app header from layout.tsx */
+  .resume-builder-page-header,
+  .resume-builder-controls-column,
+  .resume-preview-title {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Ensure the resume preview area is the only visible thing and styled for print */
+  .printable-resume-area {
+    visibility: visible !important;
+    position: fixed !important; /* Use fixed or absolute positioning */
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important; /* Reset padding, ResumePreview has its own */
+    overflow: visible !important;
+    background: white !important; /* Ensure background for print */
+  }
+  
+  /* Styles for the Card and CardContent within ResumePreview */
+  .printable-resume-area > .shadow-xl { /* Targeting the Card component */
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important; /* Allow it to expand to content height */
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important; /* Remove sticky positioning */
+    top: auto !important; 
+  }
+
+  .printable-resume-area > .shadow-xl > .pt-6 { /* Targeting the CardContent */
+     padding: 0 !important; /* Adjust if CardContent adds unwanted padding */
+     height: 100% !important;
+     max-height: none !important;
+     overflow: visible !important;
+  }
+
+  /* Styles for the actual resume content div */
+  .printable-resume-area .actual-resume-content-for-print {
+     box-shadow: none !important;
+     border: none !important;
+     margin: 0 auto !important; /* Center it if page margins are applied by @page */
+     width: 100% !important; /* Ensure it fills the print area */
+     height: 100% !important; /* Ensure it can grow as needed */
+     max-height: none !important;
+     overflow: visible !important;
+     border-radius: 0 !important; /* Remove rounded corners for print */
+     padding: 1in !important; /* Standard resume margins, adjust as needed */
+     box-sizing: border-box;
+  }
+
+  /* Reset main layout containers for print */
+  main.pt-16 {
+    padding-top: 0 !important;
+  }
+  .container {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: none !important; /* Allow it to take full page width */
+  }
+
+  @page {
+    size: A4 portrait; /* or letter */
+    margin: 0; /* Margins applied directly to .actual-resume-content-for-print */
+  }
+
+  body {
+    padding-top: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }

@@ -7,7 +7,7 @@ import ResumePreview from '@/components/resume/resume-preview';
 import { FileText, Eye, Save, FileDown } from 'lucide-react';
 import type { ResumeData, ExperienceEntry, EducationEntry } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button'; // Added Button import
+import { Button } from '@/components/ui/button';
 
 const initialResumeData: ResumeData = {
   personalInfo: {
@@ -62,10 +62,9 @@ export default function ResumeBuilderPage() {
   };
 
   const handleExportPdf = () => {
-    toast({
-      title: 'Coming Soon!',
-      description: 'The PDF export feature will be available in a future update.',
-    });
+    if (!isClient) return;
+    // Use the browser's print functionality
+    window.print();
   };
 
   const addExperienceEntry = () => {
@@ -128,7 +127,7 @@ export default function ResumeBuilderPage() {
 
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
-      <header className="mb-10 text-center">
+      <header className="mb-10 text-center resume-builder-page-header">
         <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl flex items-center justify-center">
           <FileText className="mr-3 h-10 w-10 text-primary" />
           Craft Your Professional Resume
@@ -139,7 +138,7 @@ export default function ResumeBuilderPage() {
       </header>
       
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <div>
+        <div className="resume-builder-controls-column">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold flex items-center">
               <FileText className="mr-2 h-6 w-6 text-primary" />
@@ -168,11 +167,13 @@ export default function ResumeBuilderPage() {
           />
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4 flex items-center">
+          <h2 className="text-2xl font-semibold mb-4 flex items-center resume-preview-title">
             <Eye className="mr-2 h-6 w-6 text-primary" />
             Live Preview
           </h2>
-          <ResumePreview resumeData={resumeData} />
+          <div className="printable-resume-area">
+            <ResumePreview resumeData={resumeData} />
+          </div>
         </div>
       </div>
     </div>
