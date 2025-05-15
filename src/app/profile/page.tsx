@@ -14,10 +14,10 @@ import { useToast } from '@/hooks/use-toast'; // Added useToast import
 
 // Initial placeholder user data
 const initialUser = {
-  name: 'Alex Johnson',
-  email: 'alex.johnson@example.com',
+  name: 'Soumya Jain',
+  email: 'soumyaj470@gmail.com',
   avatarUrl: 'https://placehold.co/128x128.png',
-  avatarFallback: 'AJ',
+  avatarFallback: 'SJ',
 };
 
 export default function ProfilePage() {
