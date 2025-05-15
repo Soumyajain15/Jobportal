@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent } from '@/components/ui/card'; // Removed CardHeader, CardTitle as they are not used
+import { Card, CardContent } from '@/components/ui/card';
 import { Search } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast'; // Added useToast
+import { useToast } from '@/hooks/use-toast';
 
 export default function JobSearchFilters() {
   const [keywords, setKeywords] = useState('');
@@ -22,14 +22,14 @@ export default function JobSearchFilters() {
     const filters = {
       keywords,
       location,
-      industry,
-      experienceLevel,
+      industry: industry === 'all-industries' ? '' : industry, // Handle "all" value
+      experienceLevel: experienceLevel === 'all-levels' ? '' : experienceLevel, // Handle "all" value
     };
     console.log('Job filters submitted:', filters);
     // In a real application, you would use these filters to fetch/filter jobs
     toast({
       title: 'Filters Applied',
-      description: 'Your job search filters have been applied (simulation).',
+      description: `Keywords: ${filters.keywords || 'Any'}, Location: ${filters.location || 'Any'}, Industry: ${filters.industry || 'Any'}, Experience: ${filters.experienceLevel || 'Any'} (simulation).`,
     });
   };
 
@@ -62,7 +62,7 @@ export default function JobSearchFilters() {
                 <SelectValue placeholder="Select industry" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Industry</SelectItem>
+                <SelectItem value="all-industries">Any Industry</SelectItem>
                 <SelectItem value="tech">Technology</SelectItem>
                 <SelectItem value="finance">Finance</SelectItem>
                 <SelectItem value="healthcare">Healthcare</SelectItem>
@@ -79,7 +79,7 @@ export default function JobSearchFilters() {
                 <SelectValue placeholder="Select experience level" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Level</SelectItem>
+                <SelectItem value="all-levels">Any Level</SelectItem>
                 <SelectItem value="entry">Entry Level</SelectItem>
                 <SelectItem value="mid">Mid Level</SelectItem>
                 <SelectItem value="senior">Senior Level</SelectItem>
@@ -97,3 +97,4 @@ export default function JobSearchFilters() {
     </Card>
   );
 }
+
