@@ -15,10 +15,10 @@ export default function JobCard({ job }: JobCardProps) {
     <Card className="flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader>
         <div className="flex items-start justify-between">
-            <Image 
+            <Image
                 src={job.companyLogoUrl || `https://placehold.co/40x40.png`}
                 alt={`${job.companyName} logo`}
-                data-ai-hint="company logo"
+                data-ai-hint={job.dataAihint || 'company logo'}
                 width={40}
                 height={40}
                 className="rounded-sm mr-3"

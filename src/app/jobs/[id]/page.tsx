@@ -45,17 +45,17 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
               </CardDescription>
             </div>
             {job.companyLogoUrl && (
-              <Image 
-                src={job.companyLogoUrl} 
+              <Image
+                src={job.companyLogoUrl}
                 alt={`${job.companyName} logo`}
-                data-ai-hint="company logo"
-                width={80} 
-                height={80} 
+                data-ai-hint={job.dataAihint || 'company logo'}
+                width={80}
+                height={80}
                 className="rounded-md border object-contain"
               />
             )}
           </div>
-          
+
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground mt-4">
             <div className="flex items-center">
               <MapPin className="mr-2 h-4 w-4 text-primary" /> {job.location}
@@ -74,7 +74,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
         <CardContent className="py-6">
           <h2 className="text-xl font-semibold mb-3">Job Description</h2>
           <p className="text-muted-foreground whitespace-pre-line">
-            {job.shortDescription} 
+            {job.shortDescription}
             {/* Usually a full job description would go here */}
             \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             \n\nKey Responsibilities:
@@ -88,7 +88,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             \n- Proficiency in JavaScript, React, and Node.js.
             \n- Strong problem-solving skills.
           </p>
-          
+
           {job.tags && job.tags.length > 0 && (
             <>
               <h3 className="text-lg font-semibold mt-6 mb-2">Skills & Technologies</h3>
