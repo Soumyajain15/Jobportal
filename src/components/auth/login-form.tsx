@@ -45,24 +45,16 @@ export default function LoginForm() {
       return;
     }
 
+    // Simulate a login process
+    // For this prototype, any non-empty email/password will "succeed" after a short delay.
     setTimeout(() => {
       setIsLoading(false);
-      // Simulate a successful login - you can use "user@example.com" and "password"
-      if (email === "user@example.com" && password === "password") {
-        auth.login(); 
-        toast({
-          title: 'Login Successful',
-          description: 'Welcome back! Redirecting you now...',
-        });
-        router.push('/profile'); 
-      } else {
-        setError('Invalid email or password.');
-        toast({
-          variant: "destructive",
-          title: "Login Failed",
-          description: "Invalid email or password.",
-        });
-      }
+      auth.login(); 
+      toast({
+        title: 'Login Successful',
+        description: 'Welcome back! Redirecting you now...',
+      });
+      router.push('/profile'); 
     }, 1500);
   };
   
@@ -87,7 +79,7 @@ export default function LoginForm() {
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Login Failed</AlertTitle>
+              <AlertTitle>Login Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
