@@ -7,7 +7,7 @@ import Header from '@/components/layout/header';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/hooks/useAuth';
 import CareerAssistantWidget from '@/components/chatbot/career-assistant-widget';
-import { ThemeProvider } from '@/components/theme-provider'; // Import ThemeProvider
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
   title: 'CareerConnect Pro',
@@ -20,7 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning> {/* suppressHydrationWarning for next-themes */}
+    <html lang="en" suppressHydrationWarning={true}>
+      {/* Next.js automatically handles the <head> tag content based on Metadata API and child components */}
       <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased font-sans`}>
         <ThemeProvider
           attribute="class"
@@ -30,7 +31,7 @@ export default function RootLayout({
         >
           <AuthProvider>
             <Header />
-            <main className="pt-16"> {/* Add padding to avoid content overlap with fixed header */}
+            <main className="pt-16">
               {children}
             </main>
             <Toaster />
