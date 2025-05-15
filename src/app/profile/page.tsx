@@ -3,23 +3,44 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Label } from '@/components/ui/label'; // Added import for Label
-import { User, Mail, Edit, LogOut, Loader2 } from 'lucide-react';
-import Image from 'next/image'; // Added for placeholder image if AvatarImage is not used directly with src
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input'; // Added Input import
+import { User, Mail, Edit, LogOut, Loader2, Save, XCircle, Image as ImageIcon } from 'lucide-react'; // Added Save, XCircle, ImageIcon
+import { useToast } from '@/hooks/use-toast'; // Added useToast import
+
+// Initial placeholder user data
+const initialUser = {
+  name: 'Alex Johnson',
+  email: 'alex.johnson@example.com',
+  avatarUrl: 'https://placehold.co/128x128.png',
+  avatarFallback: 'AJ',
+};
 
 export default function ProfilePage() {
   const { isAuthenticated, logout } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState(initialUser);
+  const [formData, setFormData] = useState(initialUser);
 
   useEffect(() => {
     if (isAuthenticated === false) {
       router.push('/login');
     }
   }, [isAuthenticated, router]);
+
+  useEffect(() => {
+    // When editing starts, populate form with current profile data
+    if (isEditing) {
+      setFormData(profileData);
+    }
+  }, [isEditing, profileData]);
 
   if (isAuthenticated === null) {
     return (
@@ -30,17 +51,28 @@ export default function ProfilePage() {
   }
 
   if (!isAuthenticated) {
-    // This will prevent rendering anything if not authenticated,
-    // useEffect above will handle redirect.
-    return null;
+    return null; // useEffect handles redirect
   }
 
-  // Placeholder user data
-  const user = {
-    name: 'Alex Johnson', // Placeholder name
-    email: 'alex.johnson@example.com', // Placeholder email
-    avatarUrl: 'https://placehold.co/128x128.png',
-    avatarFallback: 'AJ',
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveProfile = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setProfileData(formData); // "Save" the data to our display state
+    setIsEditing(false);
+    toast({
+      title: 'Profile Updated',
+      description: 'Your profile information has been saved.',
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    // Optionally reset formData to profileData if you want to discard changes immediately
+    setFormData(profileData); 
   };
 
   return (
@@ -49,35 +81,83 @@ export default function ProfilePage() {
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <Avatar className="h-24 w-24 border-2 border-primary">
-              <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="profile person" />
-              <AvatarFallback className="text-3xl bg-muted text-muted-foreground">{user.avatarFallback}</AvatarFallback>
+              <AvatarImage src={profileData.avatarUrl} alt={profileData.name} data-ai-hint="profile person" />
+              <AvatarFallback className="text-3xl bg-muted text-muted-foreground">{profileData.avatarFallback}</AvatarFallback>
             </Avatar>
           </div>
-          <CardTitle className="text-3xl font-bold">{user.name}</CardTitle>
+          <CardTitle className="text-3xl font-bold">{profileData.name}</CardTitle>
           <CardDescription className="text-muted-foreground text-lg">
-            Manage your account details and preferences.
+            {isEditing ? 'Update your account details.' : 'Manage your account details and preferences.'}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="fullName" className="text-sm font-medium text-muted-foreground flex items-center">
-                <User className="mr-2 h-4 w-4" /> Full Name
-              </Label>
-              <p id="fullName" className="text-lg font-semibold">{user.name}</p>
+        
+        {isEditing ? (
+          <form onSubmit={handleSaveProfile}>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="flex items-center"><User className="mr-2 h-4 w-4" /> Full Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Your full name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center"><Mail className="mr-2 h-4 w-4" /> Email Address</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="your.email@example.com"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="avatarUrl" className="flex items-center"><ImageIcon className="mr-2 h-4 w-4" /> Avatar URL</Label>
+                <Input
+                  id="avatarUrl"
+                  name="avatarUrl"
+                  value={formData.avatarUrl}
+                  onChange={handleInputChange}
+                  placeholder="https://example.com/avatar.png"
+                />
+              </div>
+              <div className="flex gap-2 mt-4">
+                <Button type="submit" className="w-full">
+                  <Save className="mr-2 h-4 w-4" /> Save Changes
+                </Button>
+                <Button type="button" variant="outline" onClick={handleCancelEdit} className="w-full">
+                  <XCircle className="mr-2 h-4 w-4" /> Cancel
+                </Button>
+              </div>
+            </CardContent>
+          </form>
+        ) : (
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="viewFullName" className="text-sm font-medium text-muted-foreground flex items-center">
+                  <User className="mr-2 h-4 w-4" /> Full Name
+                </Label>
+                <p id="viewFullName" className="text-lg font-semibold">{profileData.name}</p>
+              </div>
+              <div>
+                <Label htmlFor="viewEmail" className="text-sm font-medium text-muted-foreground flex items-center">
+                  <Mail className="mr-2 h-4 w-4" /> Email Address
+                </Label>
+                <p id="viewEmail" className="text-lg font-semibold">{profileData.email}</p>
+              </div>
             </div>
-            <div>
-              <Label htmlFor="email" className="text-sm font-medium text-muted-foreground flex items-center">
-                <Mail className="mr-2 h-4 w-4" /> Email Address
-              </Label>
-              <p id="email" className="text-lg font-semibold">{user.email}</p>
-            </div>
-          </div>
-          <Button variant="outline" className="w-full">
-            <Edit className="mr-2 h-4 w-4" />
-            Edit Profile (Coming Soon)
-          </Button>
-        </CardContent>
+            <Button variant="outline" className="w-full" onClick={() => setIsEditing(true)}>
+              <Edit className="mr-2 h-4 w-4" />
+              Edit Profile
+            </Button>
+          </CardContent>
+        )}
+        
         <CardFooter>
           <Button variant="destructive" className="w-full" onClick={logout}>
             <LogOut className="mr-2 h-4 w-4" />
@@ -88,11 +168,3 @@ export default function ProfilePage() {
     </div>
   );
 }
-
-// Helper component that might be needed if Label is not directly available
-// (ShadCN's Label is usually fine, but for completeness)
-// interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
-// const Label: React.FC<LabelProps> = ({ children, ...props }) => {
-//   return <label {...props} className="block text-sm font-medium text-muted-foreground">{children}</label>;
-// }
-
