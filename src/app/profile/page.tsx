@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Label } from '@/components/ui/label'; // Added import for Label
 import { User, Mail, Edit, LogOut, Loader2 } from 'lucide-react';
 import Image from 'next/image'; // Added for placeholder image if AvatarImage is not used directly with src
 
@@ -94,3 +95,4 @@ export default function ProfilePage() {
 // const Label: React.FC<LabelProps> = ({ children, ...props }) => {
 //   return <label {...props} className="block text-sm font-medium text-muted-foreground">{children}</label>;
 // }
+
