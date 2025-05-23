@@ -1,32 +1,31 @@
 
 'use client';
 
-import { use } from 'react'; // Import the 'use' hook
+import { use, useState, useEffect } from 'react'; // Import useState and useEffect
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { placeholderJobs } from "@/lib/placeholders";
+import { placeholderJobs, type Application } from "@/lib/placeholders"; // Import Application type
 import { ArrowLeft, Briefcase, MapPin, DollarSign, Building, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 
-// It's good practice to type the params object accurately.
-// The warning suggests params might be treated as a promise internally or in future versions.
-// Let's use a more generic type for paramsPromise that could be a promise or an object.
 interface JobDetailsPageProps {
-  params: { id: string } | Promise<{ id: string }>; // Allow it to be a promise or direct object
+  params: { id: string } | Promise<{ id: string }>;
 }
 
 export default function JobDetailsPage({ params: paramsInput }: JobDetailsPageProps) {
-  // Use React.use to unwrap params if it's a promise, or use directly if it's an object.
-  // This handles the case where Next.js might pass it as a promise.
-  const params = use(paramsInput as Promise<{ id: string }>); // Cast to Promise for use(), it handles non-promises too.
-
+  const params = use(paramsInput as Promise<{ id: string }>);
   const job = placeholderJobs.find(j => j.id === params.id);
   const { toast } = useToast();
+  const [isClient, setIsClient] = useState(false);
 
-  if (!job) {
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!job && isClient) { // Ensure job check happens after client-side hydration if params might be promise
     return (
       <div className="container mx-auto py-12 px-4 md:px-6 text-center">
         <h1 className="text-3xl font-bold mb-4">Job Not Found</h1>
@@ -40,12 +39,55 @@ export default function JobDetailsPage({ params: paramsInput }: JobDetailsPagePr
       </div>
     );
   }
+  
+  if (!job) {
+    // Still loading or job not found server-side initially
+    return <div className="container mx-auto py-12 px-4 md:px-6 text-center">Loading job details...</div>;
+  }
+
 
   const handleApplyNow = () => {
-    toast({
-      title: "Application Submitted (Simulation)",
-      description: `You have successfully applied for the position of ${job.title} at ${job.companyName}.`,
-    });
+    if (!isClient) return; // Ensure localStorage is available
+
+    const newApplication: Application = {
+      id: crypto.randomUUID(),
+      jobTitle: job.title,
+      companyName: job.companyName,
+      status: 'Applied',
+      appliedDate: new Date().toISOString(),
+      jobId: job.id,
+    };
+
+    try {
+      const storedApplications = localStorage.getItem('userApplications');
+      let applications: Application[] = storedApplications ? JSON.parse(storedApplications) : [];
+      
+      // Optional: Prevent adding duplicate applications for the same job
+      const existingApplication = applications.find(app => app.jobId === newApplication.jobId);
+      if (existingApplication) {
+         toast({
+          title: "Already Applied",
+          description: `You have already applied for ${job.title} at ${job.companyName}.`,
+          variant: "default",
+        });
+        return;
+      }
+
+      applications.push(newApplication);
+      localStorage.setItem('userApplications', JSON.stringify(applications));
+
+      toast({
+        title: "Application Submitted (Simulation)",
+        description: `You have successfully applied for the position of ${job.title} at ${job.companyName}.`,
+      });
+    } catch (error) {
+      console.error("Failed to save application to localStorage", error);
+      toast({
+        title: "Error",
+        description: "Could not save your application. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -135,10 +177,3 @@ export default function JobDetailsPage({ params: paramsInput }: JobDetailsPagePr
     </div>
   );
 }
-
-// This function can be used if you need to generate static paths at build time
-// export async function generateStaticParams() {
-//   return placeholderJobs.map(job => ({
-//     id: job.id,
-//   }));
-// }
