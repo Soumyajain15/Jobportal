@@ -103,7 +103,7 @@ Careconnect/
 
 ## 🌐 Live Demo
 
-🔗 [careconnect-beta.vercel.app](https://careconnect-beta.vercel.app)
+🔗 [careconnect-beta.vercel.app](https://jobportal-topaz.vercel.app)
 
 ---
 
