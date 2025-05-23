@@ -1,6 +1,7 @@
 
 'use client';
 
+import { use } from 'react'; // Import the 'use' hook
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -8,11 +9,22 @@ import { placeholderJobs } from "@/lib/placeholders";
 import { ArrowLeft, Briefcase, MapPin, DollarSign, Building, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useToast } from "@/hooks/use-toast"; // Added useToast import
+import { useToast } from "@/hooks/use-toast";
 
-export default function JobDetailsPage({ params }: { params: { id: string } }) {
+// It's good practice to type the params object accurately.
+// The warning suggests params might be treated as a promise internally or in future versions.
+// Let's use a more generic type for paramsPromise that could be a promise or an object.
+interface JobDetailsPageProps {
+  params: { id: string } | Promise<{ id: string }>; // Allow it to be a promise or direct object
+}
+
+export default function JobDetailsPage({ params: paramsInput }: JobDetailsPageProps) {
+  // Use React.use to unwrap params if it's a promise, or use directly if it's an object.
+  // This handles the case where Next.js might pass it as a promise.
+  const params = use(paramsInput as Promise<{ id: string }>); // Cast to Promise for use(), it handles non-promises too.
+
   const job = placeholderJobs.find(j => j.id === params.id);
-  const { toast } = useToast(); // Initialize toast
+  const { toast } = useToast();
 
   if (!job) {
     return (
@@ -30,13 +42,10 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
   }
 
   const handleApplyNow = () => {
-    // In a real application, this would submit the application data
-    // For this prototype, we'll just show a toast
     toast({
       title: "Application Submitted (Simulation)",
       description: `You have successfully applied for the position of ${job.title} at ${job.companyName}.`,
     });
-    // Optionally, you could redirect the user or add to "My Applications" (more complex)
   };
 
   return (
