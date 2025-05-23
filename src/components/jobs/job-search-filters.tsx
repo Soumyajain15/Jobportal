@@ -9,27 +9,44 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent } from '@/components/ui/card';
 import { Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import type { FilterCriteria } from '@/app/jobs/page'; // Import FilterCriteria type
 
-export default function JobSearchFilters() {
+interface JobSearchFiltersProps {
+  onApplyFilters: (filters: FilterCriteria) => void;
+}
+
+export default function JobSearchFilters({ onApplyFilters }: JobSearchFiltersProps) {
   const [keywords, setKeywords] = useState('');
   const [location, setLocation] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [experienceLevel, setExperienceLevel] = useState('');
+  const [industry, setIndustry] = useState('all-industries'); // Default to "all"
+  const [experienceLevel, setExperienceLevel] = useState('all-levels'); // Default to "all"
   const { toast } = useToast();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const filters = {
+    const filters: FilterCriteria = {
       keywords,
       location,
-      industry: industry === 'all-industries' ? '' : industry, // Handle "all" value
-      experienceLevel: experienceLevel === 'all-levels' ? '' : experienceLevel, // Handle "all" value
+      industry,
+      experienceLevel,
     };
-    console.log('Job filters submitted:', filters);
-    // In a real application, you would use these filters to fetch/filter jobs
+    onApplyFilters(filters);
+    
+    let toastDescription = `Keywords: ${filters.keywords || 'Any'}, Location: ${filters.location || 'Any'}`;
+    if (filters.industry !== 'all-industries') {
+        toastDescription += `, Industry: ${filters.industry}`;
+    } else {
+        toastDescription += `, Industry: Any`;
+    }
+    if (filters.experienceLevel !== 'all-levels') {
+        toastDescription += `, Experience: ${filters.experienceLevel}`;
+    } else {
+        toastDescription += `, Experience: Any`;
+    }
+    
     toast({
       title: 'Filters Applied',
-      description: `Keywords: ${filters.keywords || 'Any'}, Location: ${filters.location || 'Any'}, Industry: ${filters.industry || 'Any'}, Experience: ${filters.experienceLevel || 'Any'} (simulation).`,
+      description: `${toastDescription}. Job list updated.`,
     });
   };
 
@@ -97,4 +114,3 @@ export default function JobSearchFilters() {
     </Card>
   );
 }
-
