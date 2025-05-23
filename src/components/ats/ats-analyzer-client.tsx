@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { AnalyzeResumeInput, AnalyzeResumeOutput } from '@/ai/flows/ats-resume-analyzer';
@@ -12,6 +13,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Lightbulb, AlertCircle, CheckCircle, Loader2, UploadCloud, FileText } from 'lucide-react';
 import React, { useState } from 'react';
+
+const MAX_FILE_SIZE_MB = 3;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 const fileToDataUri = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -39,12 +43,23 @@ export default function AtsAnalyzerClient() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Basic validation for PDF/DOCX
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        setResumeFile(null);
+        event.target.value = ''; // Clear the input
+        toast({
+          variant: "destructive",
+          title: "File Too Large",
+          description: `Please upload a file smaller than ${MAX_FILE_SIZE_MB}MB.`,
+        });
+        return;
+      }
+
       if (file.type === "application/pdf" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.type === "text/plain") {
         setResumeFile(file);
-        setError(null); // Clear previous error
+        setError(null); 
       } else {
         setResumeFile(null);
+        event.target.value = ''; // Clear the input
         toast({
           variant: "destructive",
           title: "Invalid File Type",
@@ -82,7 +97,7 @@ export default function AtsAnalyzerClient() {
       });
     } catch (e) {
       console.error('Analysis failed:', e);
-      const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred during analysis.';
+      const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred during analysis. Please ensure your API key is configured correctly for the deployed environment.';
       setError(errorMessage);
       toast({
         variant: "destructive",
@@ -106,7 +121,7 @@ export default function AtsAnalyzerClient() {
             onChange={handleFileChange}
             className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
           />
-          {resumeFile && <p className="text-sm text-muted-foreground mt-1">Selected: {resumeFile.name}</p>}
+          {resumeFile && <p className="text-sm text-muted-foreground mt-1">Selected: {resumeFile.name} ({(resumeFile.size / (1024*1024)).toFixed(2)} MB)</p>}
         </div>
 
         <div className="space-y-2">
@@ -121,7 +136,7 @@ export default function AtsAnalyzerClient() {
           />
         </div>
 
-        <Button type="submit" disabled={isLoading} className="w-full text-lg py-6">
+        <Button type="submit" disabled={isLoading || !resumeFile} className="w-full text-lg py-6">
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />

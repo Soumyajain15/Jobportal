@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -43,7 +44,11 @@ Job Description: {{{jobDescription}}}
 
 Resume: {{media url=resumeDataUri}}
 
-Output the ATS score and suggestions in JSON format.
+Output the ATS score and suggestions in JSON format that strictly adheres to the following schema:
+{
+  "atsScore": "number (0-100)",
+  "suggestions": ["string"]
+}
 `,
 });
 
@@ -55,6 +60,15 @@ const analyzeResumeFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt(input);
-    return output!;
+    if (!output) {
+      console.error('ATS Resume Analysis: Model did not return a valid output.');
+      throw new Error('The AI model did not return a valid analysis. This might be due to an issue with the input file or the job description. Please try again.');
+    }
+    // Basic validation of the output structure, although Zod schema parsing handles this too
+    if (typeof output.atsScore !== 'number' || !Array.isArray(output.suggestions)) {
+        console.error('ATS Resume Analysis: Model output structure is invalid.', output);
+        throw new Error('The AI model returned an invalid analysis format. Please try again.');
+    }
+    return output;
   }
 );
