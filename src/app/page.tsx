@@ -35,7 +35,7 @@ export default function HomePage() {
               </div>
             </div>
             <Image
-              src="https://placehold.co/600x400.png"
+              src="https://webfeb.in/wp-content/uploads/2016/09/job-portal-1.jpg"
               alt="Hero"
               data-ai-hint="job portal interface"
               width={600}
