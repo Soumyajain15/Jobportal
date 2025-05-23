@@ -1,3 +1,6 @@
+
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -5,9 +8,11 @@ import { placeholderJobs } from "@/lib/placeholders";
 import { ArrowLeft, Briefcase, MapPin, DollarSign, Building, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast"; // Added useToast import
 
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
   const job = placeholderJobs.find(j => j.id === params.id);
+  const { toast } = useToast(); // Initialize toast
 
   if (!job) {
     return (
@@ -23,6 +28,16 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
       </div>
     );
   }
+
+  const handleApplyNow = () => {
+    // In a real application, this would submit the application data
+    // For this prototype, we'll just show a toast
+    toast({
+      title: "Application Submitted (Simulation)",
+      description: `You have successfully applied for the position of ${job.title} at ${job.companyName}.`,
+    });
+    // Optionally, you could redirect the user or add to "My Applications" (more complex)
+  };
 
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
@@ -102,7 +117,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
         </CardContent>
         <Separator />
         <CardFooter className="py-6">
-          <Button size="lg" className="w-full md:w-auto">
+          <Button size="lg" className="w-full md:w-auto" onClick={handleApplyNow}>
             Apply Now
             <Briefcase className="ml-2 h-5 w-5" />
           </Button>
