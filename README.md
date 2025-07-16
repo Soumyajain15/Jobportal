@@ -29,7 +29,8 @@
 * **Deployment**: Vercel
 
 ---
-<img width="1914" height="913" alt="Screenshot (102)" src="https://github.com/user-attachments/assets/ce495ffd-7bba-46f7-b843-1a55a3f77150" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bcf9069f-355e-4679-a8ce-4267af1664d7" />
+
 
 
 ## 🚀 Getting Started
@@ -47,7 +48,7 @@ git clone https://github.com/Soumyajain15/Careconnect.git
 cd Careconnect
 npm install  # or yarn install
 ```
-<img width="1906" height="914" alt="Screenshot (103)" src="https://github.com/user-attachments/assets/54c8c3f7-4416-4a71-98c3-57a50b545558" />
+<img width="1914" height="913" alt="Screenshot (102)" src="https://github.com/user-attachments/assets/ce495ffd-7bba-46f7-b843-1a55a3f77150" />
 
 
 ### Environment Variables
@@ -64,7 +65,9 @@ NEXTAUTH_URL=http://localhost:3000
 
 ```bash
 npm run dev  # or yarn dev
-```<img width="1910" height="910" alt="Screenshot (104)" src="https://github.com/user-attachments/assets/373be70d-2419-4be3-bec0-fe23973ff74b" />
+```
+<img width="1906" height="914" alt="Screenshot (103)" src="https://github.com/user-attachments/assets/54c8c3f7-4416-4a71-98c3-57a50b545558" />
+
 
 
 Then visit: [http://localhost:3000](http://localhost:3000)
@@ -96,8 +99,7 @@ Careconnect/
 
 ## 📦 Scripts
 
-```json![Screenshot (78)](https://github.com/user-attachments/assets/a7a20400-98e1-4f27-8ce1-438401fa987a)
-
+```json!<img width="1910" height="910" alt="Screenshot (104)" src="https://github.com/user-attachments/assets/373be70d-2419-4be3-bec0-fe23973ff74b" />
 "dev": "next dev",
 "build": "next build",
 "start": "next start",
