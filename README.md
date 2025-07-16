@@ -82,7 +82,9 @@ Then visit: [http://localhost:3000](http://localhost:3000)
 
 
 
-```plaintext
+```
+
+plaintext
 Careconnect/
 ├── components/         # Reusable components
 ├── pages/              # Next.js routing structure
