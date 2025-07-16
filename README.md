@@ -3,7 +3,8 @@
 **Careconnect** is a modern **job portal application** built with **Next.js**, **TypeScript**, and **Tailwind CSS**. It connects job seekers with employers through a sleek, responsive interface and offers tools for posting and applying to jobs.
 
 ---
-![Screenshot (81)](https://github.com/user-attachments/assets/475c9268-fe41-4270-a1f2-04f7007e197b)
+<img width="1918" height="914" alt="Screenshot (100)" src="https://github.com/user-attachments/assets/ead6a2af-fe05-49e6-8044-55fae69114ef" />
+
 
 ## 🌟 Features
 
@@ -14,7 +15,8 @@
 * 📱 Fully responsive UI
 * ⚡ Optimized with Next.js performance features
 
----![Screenshot (84)](https://github.com/user-attachments/assets/9a638aa1-8d55-49eb-9c34-cbd6cb0cdc6e)
+<img width="1917" height="916" alt="Screenshot (101)" src="https://github.com/user-attachments/assets/dac25067-f7b3-4b2e-8af6-57762ee42848" />
+
 
 
 ## 🛠 Tech Stack
@@ -27,7 +29,8 @@
 * **Deployment**: Vercel
 
 ---
-![Screenshot (83)](https://github.com/user-attachments/assets/a596abc7-699d-4b6c-8c98-e34688e116cb)
+<img width="1914" height="913" alt="Screenshot (102)" src="https://github.com/user-attachments/assets/ce495ffd-7bba-46f7-b843-1a55a3f77150" />
+
 
 ## 🚀 Getting Started
 
@@ -44,7 +47,8 @@ git clone https://github.com/Soumyajain15/Careconnect.git
 cd Careconnect
 npm install  # or yarn install
 ```
-![Screenshot (82)](https://github.com/user-attachments/assets/04f55565-bf31-4a65-b75d-fc9a8ef41731)
+<img width="1906" height="914" alt="Screenshot (103)" src="https://github.com/user-attachments/assets/54c8c3f7-4416-4a71-98c3-57a50b545558" />
+
 
 ### Environment Variables
 
@@ -60,15 +64,17 @@ NEXTAUTH_URL=http://localhost:3000
 
 ```bash
 npm run dev  # or yarn dev
-```
-![Screenshot (80)](https://github.com/user-attachments/assets/5e975017-81ab-4ff2-83d9-81c375689e15)
+```<img width="1910" height="910" alt="Screenshot (104)" src="https://github.com/user-attachments/assets/373be70d-2419-4be3-bec0-fe23973ff74b" />
+
 
 Then visit: [http://localhost:3000](http://localhost:3000)
 
 ---
 
 ## 📁 Folder Structure
-![Screenshot (79)](https://github.com/user-attachments/assets/5d450e73-d817-4a7e-a0b0-1be29223fd06)
+<img width="1899" height="907" alt="Screenshot (105)" src="https://github.com/user-attachments/assets/c181dbec-a261-44f1-b737-2d2fd4e8dfee" />
+
+
 
 ```plaintext
 Careconnect/
