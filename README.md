@@ -40,6 +40,11 @@
 * npm or yarn
 * MongoDB (Atlas or local)
 
+
+
+<img width="1914" height="913" alt="Screenshot (102)" src="https://github.com/user-attachments/assets/ce495ffd-7bba-46f7-b843-1a55a3f77150" />
+
+
 ### Installation
 
 ```bash
@@ -47,7 +52,7 @@ git clone https://github.com/Soumyajain15/Careconnect.git
 cd Careconnect
 npm install  # or yarn install
 ```
-<img width="1914" height="913" alt="Screenshot (102)" src="https://github.com/user-attachments/assets/ce495ffd-7bba-46f7-b843-1a55a3f77150" />
+
 
 
 ### Environment Variables
