@@ -69,7 +69,6 @@ npm run dev  # or yarn dev
 <img width="1906" height="914" alt="Screenshot (103)" src="https://github.com/user-attachments/assets/54c8c3f7-4416-4a71-98c3-57a50b545558" />
 
 
-
 Then visit: [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -107,7 +106,8 @@ Careconnect/
 ```
 
 ---
-![Screenshot (76)](https://github.com/user-attachments/assets/f21bd510-8196-4f77-9017-49ed4de7c728)
+<img width="1913" height="907" alt="Screenshot (106)" src="https://github.com/user-attachments/assets/6ffd2678-edb7-4710-acc8-9afcc23da653" />
+
 
 ## 🌐 Live Demo
 
