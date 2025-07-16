@@ -30,7 +30,7 @@
 
 ---
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bcf9069f-355e-4679-a8ce-4267af1664d7" />
-
+<img width="1913" height="907" alt="Screenshot (106)" src="https://github.com/user-attachments/assets/6ffd2678-edb7-4710-acc8-9afcc23da653" />
 
 
 ## 🚀 Getting Started
@@ -106,7 +106,8 @@ Careconnect/
 ```
 
 ---
-<img width="1913" height="907" alt="Screenshot (106)" src="https://github.com/user-attachments/assets/6ffd2678-edb7-4710-acc8-9afcc23da653" />
+
+<img width="1910" height="910" alt="Screenshot (104)" src="https://github.com/user-attachments/assets/ec31031a-deb1-4f56-82ab-269adba90679" />
 
 
 ## 🌐 Live Demo
